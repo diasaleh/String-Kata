@@ -12,7 +12,6 @@ let explode (s:string) =
 let containsNegNum intArr = 
     let sum = intArr |> Array.toList|> List.filter(fun n -> n < 0) |> List.sum
     sum  
-
 let setDelimiter (s:string) = 
     if s.[..1].Equals("//") then
         let del = explode s.[2..].[..0]
@@ -28,7 +27,7 @@ let Add (s : string) =
         let nums = splitString str del
         let intAr = convertSringsListToIntsList nums
         if containsNegNum intAr = 0 then
-            let sum =  Array.sum (intAr |> Array.rev|> Array.takeWhile (fun x -> x > 0))
+            let sum =  Array.sum (intAr)
             printfn "%A" sum 
         else
             printfn "negatives not allowed"
@@ -36,4 +35,4 @@ let Add (s : string) =
             printfn "%A" i
     else
         printfn "%s" "0"
-Add "//;\n1;-2"
+Add "//;\n1;2;3;4"
