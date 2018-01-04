@@ -1,5 +1,3 @@
-open System
-
 let splitString (t : string) (delimiter) = 
     let arr = t.Split delimiter
     arr
@@ -11,12 +9,19 @@ let convertSringsListToIntsList (sList:string [])=
     intArr
 let explode (s:string) =
     [for c in s -> c]|> List.toArray 
+let setDelimiter (s:string) = 
+    if s.[..1].Equals("//") then
+        let del = explode s.[2..].[..0]
+        let str = s.[4..]
+        del, str
+    else
+        let del = explode "\n |, "
+        del, s
 let Add (s : string) = 
     let st = s.Trim()
     if not (st.Equals("")) then
-        let del = explode "\n |, "
-
-        let nums = splitString st del
+        let del, str= setDelimiter st
+        let nums = splitString str del
         for i in nums do
             printfn "%A" i
         let sum =  Array.sum (convertSringsListToIntsList nums)
@@ -24,5 +29,4 @@ let Add (s : string) =
         printfn "%A" sum 
     else
         printfn "%s" "0"
-    
-Add " 1\n2,8"
+Add "1\n2,3"
