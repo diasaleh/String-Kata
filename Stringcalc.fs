@@ -9,6 +9,10 @@ let convertSringsListToIntsList (sList:string [])=
     intArr
 let explode (s:string) =
     [for c in s -> c]|> List.toArray 
+let containsNegNum intArr = 
+    let sum = intArr |> Array.toList|> List.filter(fun n -> n < 0) |> List.sum
+    sum  
+
 let setDelimiter (s:string) = 
     if s.[..1].Equals("//") then
         let del = explode s.[2..].[..0]
@@ -22,11 +26,14 @@ let Add (s : string) =
     if not (st.Equals("")) then
         let del, str= setDelimiter st
         let nums = splitString str del
+        let intAr = convertSringsListToIntsList nums
+        if containsNegNum intAr = 0 then
+            let sum =  Array.sum (intAr |> Array.rev|> Array.takeWhile (fun x -> x > 0))
+            printfn "%A" sum 
+        else
+            printfn "negatives not allowed"
         for i in nums do
             printfn "%A" i
-        let sum =  Array.sum (convertSringsListToIntsList nums)
-        
-        printfn "%A" sum 
     else
         printfn "%s" "0"
-Add "1\n2,3"
+Add "//;\n1;-2"
