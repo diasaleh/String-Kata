@@ -6,7 +6,9 @@ let stringToCharArr (s:string) =
 let containsNegativesNums intArr = 
     intArr |> Array.toList|> List.filter(fun n -> n < 0) |> List.sum 
 let sumArrayIgnoreNumsBiggerThan1000 intArr = 
-    intArr |> Array.toList|> List.filter(fun n -> n <= 1000) |> List.sum   
+    intArr |> Array.toList|> List.filter(fun n -> n <= 1000) |> List.sum 
+let removeEmptyStringsFromArr arr=
+    Array.choose (fun elem -> if not (elem.Equals("")) then Some(elem) else None) arr
 let convertSringsListToIntsList (sList:string [])=
     let len = Array.length sList
     let intArr = Array.create len 0
@@ -24,10 +26,10 @@ let getFirstNumIndex (s : string)=
     index
 let getNumsString (s:string) = 
     if s.[..1].Equals("//") then
-        let delArr = Array.create 1 ""
         let delA = [|"["; "]"|]
-        let delString = (splitString s delA).[1]
-        Array.set delArr 0 delString
+        let delString = (splitString s delA)
+        let delArr = removeEmptyStringsFromArr (delString.[1.. delString.Length-2])
+        printfn "\ndelArr = %A \n" delArr 
         let numsString=(splitString s.[(getFirstNumIndex s)..] delArr)
         numsString
     else
@@ -47,5 +49,4 @@ let Add (s : string) =
             printfn "\nnegatives not allowed\n"
     else
         printfn "%s" "0"
-Add "//[\n\n\n]\n1\n\n\n2\n\n\n3\n\n\n5"
-Add "//[%%%]\n1%%%2%%%3%%%5"
+Add "//[*][%%][\n\n\n]\n1*2%%3\n\n\n5*33"
